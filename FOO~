@@ -1,5 +1,0 @@
-git config --global alias.unstage 'reset HEAD'
-git config --global merge.tool 'meld'
-git config --global user.name 'martin'
-git config --global user.email 'martin.hoelzer@uni-jena.de'
-git config --global core.editor 'emacs'
