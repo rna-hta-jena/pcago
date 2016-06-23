@@ -9,22 +9,32 @@ library(shiny)
 
 shinyUI(fluidPage(
 
-  titlePanel("censusVis"),
+  titlePanel("PCA-GO"),
   
   sidebarLayout(
     sidebarPanel(
-      helpText("Create demographic maps with information from the 2010 US census."),
       
-      selectInput("var", label="Choose a variable to display", 
-                  choices = list("Percent White", "Percent Black",
-                                 "Percent Hispanic", "Percent Asian"), selected="Percent White"),
+      fileInput('file', 'File upload'),
       
+      radioButtons('dimensions', 'Dimensions', choices = list('2D','3D'), selected = '2D'),
       
-      sliderInput("range", label = "Range of interest:", min=0, max=100, value=c(0,100))
+      checkboxGroupInput('pc', 'Principal components', choices = list('PC1' = 1,'PC2' = 2,'PC3' = 3,'PC4' = 4), selected = list(1,2)),
+      
+      sliderInput("ntop_slider", label = "Number of genes:", min=10, max=5000, value=500),
+      
+      textInput('ntop', ''),
+      
+      actionButton('run', 'Slideshow')
       
     ),
     
-    mainPanel()
+    mainPanel(
+      
+      textOutput("text1"),
+      
+      plotOutput("pca.plot")
+      
+    )
   )
 
 ))

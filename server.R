@@ -6,7 +6,22 @@
 #
 
 library(shiny)
+source("pca.R")
 
 shinyServer(function(input, output) {
+
+  output$text1 <- renderText({
+    if(is.null(input$file)) {
+      "Principal Component Analysis (PCA) is a technique to reduce the information dimensionality of a dataset consisting of a large number of interrelated variables obtained from a combinatorial experiment or from a well organized database by projection methods, in a way that minimizes the loss of information. Please upload your normalized read count data!"
+    }
+  })
+  
+  output$pca.plot <- renderPlot({
+    counts.matrix <- read_file(input$file$datapath)
+    if (!is.null(counts.matrix)) {
+      pca(counts.matrix, input$dimensions, input$ntop_slider, input$pc)
+    }
+  })
+
 
 })
