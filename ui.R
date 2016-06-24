@@ -24,7 +24,11 @@ shinyUI(fluidPage(
       
       textInput('ntop', ''),
       
-      actionButton('run', 'Slideshow')
+      actionButton('run', 'Slideshow'),
+      
+      helpText('Customize your PCA plot:'),
+      
+      uiOutput('conditions')
       
     ),
     

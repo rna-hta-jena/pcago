@@ -2,6 +2,9 @@ library("matrixStats")
 library("ggplot2")
 library("scatterplot3d")
 
+## LOCAL TESTING
+#file <- 'data/normalized_counts.small.csv'
+
 # read in dummy read counts
 read_file <- function(file) {
   if(is.null(file)) {
@@ -12,6 +15,7 @@ read_file <- function(file) {
     
     counts.frame <- data.frame(read.table(file, header=TRUE, sep=","))
     counts.matrix <- data.matrix(counts.frame)
+    counts.matrix <- counts.matrix[,-1]
     return(counts.matrix)
   }
 }

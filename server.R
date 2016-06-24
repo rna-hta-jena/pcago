@@ -18,10 +18,17 @@ shinyServer(function(input, output) {
   
   output$pca.plot <- renderPlot({
     counts.matrix <- read_file(input$file$datapath)
+    conditions <- colnames(counts.matrix)
     if (!is.null(counts.matrix)) {
       pca(counts.matrix, input$dimensions, input$ntop_slider, input$pc)
     }
+    
+    #output$conditions <- renderUI({
+    #  selectInput('conditions', 'Conditions:', conditions)
+    #})
   })
+  
+
 
 
 })
