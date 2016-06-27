@@ -20,6 +20,8 @@ shinyUI(fluidPage(
       
       checkboxGroupInput('pc', 'Principal components', choices = list('PC1' = 1,'PC2' = 2,'PC3' = 3,'PC4' = 4), selected = list(1,2)),
       
+      checkboxInput('breakdown', 'Show breakdown'),
+      
       sliderInput("ntop_slider", label = "Number of genes:", min=10, max=5000, value=500),
       
       textInput('ntop', ''),
