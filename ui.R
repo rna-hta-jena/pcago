@@ -18,6 +18,7 @@ shinyUI(fluidPage(
       
       radioButtons('dimensions', 'Dimensions', choices = list('2D','3D'), selected = '2D'),
       
+      # TODO: after calculation of PCs add % values here and also update wenn nr genes changed
       checkboxGroupInput('pc', 'Principal components', choices = list('PC1' = 1,'PC2' = 2,'PC3' = 3,'PC4' = 4), selected = list(1,2)),
       
       checkboxInput('breakdown', 'Show breakdown'),
