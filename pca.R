@@ -1,9 +1,13 @@
 library("matrixStats")
 library("ggplot2")
 library("scatterplot3d")
+library("hash")
+library("shinyjs")
 
 ## LOCAL TESTING
-#file <- 'data/normalized_counts.small.csv'
+file <- 'data/normalized_counts.small.csv'
+
+condition.color.hash <- hash()
 
 # read in dummy read counts
 read_file <- function(file) {
@@ -16,16 +20,35 @@ read_file <- function(file) {
     counts.frame <- data.frame(read.table(file, header=TRUE, sep=","))
     counts.matrix <- data.matrix(counts.frame)
     counts.matrix <- counts.matrix[,-1]
+    
+    # initialize condition color hash
+    condition.color.hash <<- hash( keys=colnames(counts.matrix), values='#000000')
+    condition.color.hash
+    
     return(counts.matrix)
   }
 }
 
+update_color_hash <- function(selected.color, selected.conditions) {
+  print(paste('Condition Color Hash:', condition.color.hash$mono6_n2_ctr, sep=" "))
+  print(selected.color)
+  print(selected.conditions)
+  
+  for (condition in selected.conditions) {
+    condition.color.hash[[condition]] <- selected.color
+    print(condition.color.hash[[condition]])
+  }
+  
+}
+
 pca <- function(counts.matrix, dimensions, ntop, pc) {
   
-  print(dimensions)
-  print(length(counts.matrix[,1]))
-  print(ntop)
-  print(pc)
+  #print(dimensions)
+  #print(length(counts.matrix[,1]))
+  #print(ntop)
+  #print(pc)
+  
+  print(condition.color.hash$mono6_n2_ctr)
 
   ## Extracting transformed values, MAYBE just log2 transform and finish?
   # TODO: build a DESeqDataSet object out of the matrix
@@ -68,8 +91,19 @@ plot.3d <- function(dataGG, PCA, pc, percentVar) {
   color4 <- "#ff00ff"
 
   dataGG$color <- "#000000" 
-  dataGG$color[grepl('_ctr',rownames(dataGG))]  <- color1
-  dataGG$color[grepl('_atra',rownames(dataGG))]  <- color2
+  for (condition in keys(condition.color.hash)) {
+    color.tmp <- condition.color.hash[[condition]]
+    print(paste("Give the entry ", condition, " the color ", color.tmp, " in data frame."))
+    if (!is.null(color.tmp)) {
+      dataGG$color[grepl(condition,rownames(dataGG))] <- color.tmp
+    }
+  }
+  
+  
+  #dataGG$color[grepl('_ctr',rownames(dataGG))]  <- color1
+  #dataGG$color[grepl('_atra',rownames(dataGG))]  <- color2
+  
+  print(dataGG)
 
   with(dataGG, {
     s3d <- scatterplot3d(PCA$x[,nr1], PCA$x[,nr2], PCA$x[,nr3],

@@ -6,6 +6,7 @@
 #
 
 library(shiny)
+library(shinyjs)
 
 shinyUI(fluidPage(
 
@@ -31,13 +32,29 @@ shinyUI(fluidPage(
       
       helpText('Customize your PCA plot:'),
       
-      uiOutput('conditions')
+      uiOutput('conditions'),
+      
+      colourInput('colour', NULL, "blue", allowTransparent = TRUE, palette = "limited"),
+      
+      actionButton('colourButton','Submit!'),
+      p("Click the button to set the color for the selected conditions."),
+      
+      
+      
+      numericInput("n", "N:", min = 0, max = 100, value = 50),
+      br(),
+      actionButton("goButton", "Go!"),
+      p("Click the button to update the value displayed in the main panel.")
+      
+      
       
     ),
     
     mainPanel(
       
       textOutput("text1"),
+      
+      verbatimTextOutput("nText"),
       
       plotOutput("pca.plot")
       
